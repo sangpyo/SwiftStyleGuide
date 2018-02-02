@@ -182,9 +182,15 @@ do {
 /*:
  - Callout(4.1.13):
  
+ 해당 클래스의 인스턴스가 아닌 클래스와 연결된 함수 또는 속성을 선언 할 때 클래스에 `static`을 선호 한다.
+ 하위 클래스에서 해당 함수를 재정의가 특별히 필요한 경우에만 'class`를 사용한다.
+ 가능하면 `protocol`을 사용하여 이를 구현하도록 한다.
+ 
  */
 class MySomeClass {
-    static var mySomeValue = 100
+    static var mySomeStaticValue = 100
+    var mySomeValue = 300
+    
     class func mySomeTypeMethod() {
         print("MySomeClass Type Method")
     }
@@ -192,20 +198,67 @@ class MySomeClass {
         print("MySomeClass another type method")
     }
 }
+
+class MySomeSubclass: MySomeClass {
+    class override func mySomeTypeMethod() {
+        print("MySomeSubclass Type Method")
+    }
+    // 다음은 컴파일 오류가 발생한다.
+    // Error: Cannot override static method
+    /*
+    static func mySomeAnotherTypeMethod() {
+        print("MySomeSubclass another type method")
+    }
+     */
+}
+
 MySomeClass.mySomeTypeMethod()
-let mySomeValue = MySomeClass.mySomeValue
-MySomeClass.mySomeValue = 1000
-print("\(mySomeValue), \(MySomeClass.mySomeValue)")
+let mySomeValue = MySomeClass.mySomeStaticValue
+MySomeClass.mySomeStaticValue = 1_000
+print("\(mySomeValue), \(MySomeClass.mySomeStaticValue)")
 MySomeClass.mySomeAnotherTypeMethod()
+
+MySomeSubclass.mySomeTypeMethod()
+let mySomeValue2 = MySomeSubclass.mySomeStaticValue
+MySomeSubclass.mySomeStaticValue = 2_000
+print("\(mySomeValue2), \(MySomeSubclass.mySomeStaticValue)")
+MySomeSubclass.mySomeAnotherTypeMethod()
+
 /*:
  - Callout(4.1.14):
+
+ 어떤 객체, 값을 반환하는 인자가 없는 함수가 있다면, Computed Property로 변경을 고려할 필요가 있다.
  
  */
+// 좋은 예:
+class MyMoneyGoodCase {
+    var showMeTheMoney: Int {
+        return 2_000_000
+    }
+}
+let myGoodMoney = MyMoneyGoodCase()
+myGoodMoney.showMeTheMoney
+// 나쁜 예:
+class MyMoneyBadCase {
+    func showMeTheMoney() -> Int {
+        return 1_000_000
+    }
+}
+let myBadMoney = MyMoneyBadCase()
+myBadMoney.showMeTheMoney()
+
 /*:
  - Callout(4.1.15):
  
+ `static` 함수 또는 `static` 속성 집합의 네임스페이스를 지정하려면, `class` 또는 `struct`에 소문자 `enum`을 사용한다.
+ 이렇게 하면 컨테이너에 `private init() {}` 을 추가하지 않아도 된다.
+ 
  */
-
+struct Bounus {
+    enum bounusType {
+        case
+    }
+}
 /*:
  - - -
  
