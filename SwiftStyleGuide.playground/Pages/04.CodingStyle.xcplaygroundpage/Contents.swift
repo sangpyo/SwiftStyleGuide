@@ -19,6 +19,7 @@ class GoodStyle {
     
     let evenNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].filter { $0 % 2 == 0}
 }
+
 //: 나쁜 예:
 class BadStyle {
     var stringOfInts = [String]()
@@ -37,6 +38,7 @@ class BadStyle {
         }
     }
 }
+
 /*:
  - Callout(4.1.3):
  상수, 변수가 유추될 수 있으면, 그 타입을 기술하지 않는다.
@@ -63,6 +65,7 @@ func mainDriverName() -> (firstName: String, lastName: String) {
 let name = mainDriverName()
 let firstName = name.firstName
 let lastName = name.lastName
+
 /*:
  - Callout(4.1.5):
  클래스를 위한 `delegate` 와 `protocol`을 생성할때 retain cycle을 주의하여야 한다.
@@ -71,9 +74,11 @@ let lastName = name.lastName
  */
 //: 예:
 import UIKit
+
 class ConnectionTableViewController: UIViewController {
     
 }
+
 extension ConnectionTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 0
@@ -83,6 +88,7 @@ extension ConnectionTableViewController: UITableViewDataSource {
         return tableView.dequeueReusableCell(withIdentifier: "id")!
     }
 }
+
 class MyConnectionTableViewController: UITableViewController {
 
     weak var dataSource = ConnectionTableViewController()
@@ -125,12 +131,14 @@ func GoodStyeControlFlow(_ score1: Int, score2: Int) {
         //...
     }
 }
+
 //: 나쁜 예:
 func BadStyleControlFlow(_ score1: Int, score2: Int) {
     if (score1 == score2) {
         //...
     }
 }
+
 /*:
  - Callout(4.1.8):
  `enum`은 타입을 기술하지 않는다.
@@ -140,8 +148,10 @@ func BadStyleControlFlow(_ score1: Int, score2: Int) {
 import UIKit
 
 let goodStyleTableView = UITableViewController(style: .grouped)
+
 //: 나쁜 예:
 let badStyelTableView = UITableViewController(style: UITableViewStyle.grouped)
+
 /*:
  - Callout(4.19):
  `enum`과 달리 클래스 메소드에서 컨텍스트를 유추하는 것이 일반적으로 어려우므로 클래스 메소드에 대한 축약 표기를 사용하지 않는다.
@@ -151,9 +161,11 @@ let badStyelTableView = UITableViewController(style: UITableViewStyle.grouped)
 let imageView = UIImageView()
 
 imageView.backgroundColor = UIColor.black
+
 //: 나쁜 예:
 // UIColor는 클래스이므로 컨텍스트를 생략하지 않는다.
 imageView.backgroundColor = .black
+
 /*:
  - Callout(4.1.10):
  꼭 필요한 경우에만 `.self`를 사용한다.
@@ -161,13 +173,14 @@ imageView.backgroundColor = .black
  */
 /*:
  - Callout(4.1.11):
- 메소드 작성시 메소드가 override 될지 여부를 고민하고 작성한다.
- override 되지 않아야 하는 경우 `final` 기술하여 테스트 등으로 메소드가 overwrite 되지 않도록 유의한다.
+ 메소드 작성시 메소드가 override 될 가능성이 있는지 여부를 염두한다.
+ override 되지 않아야 하는 경우 `final` 기술하여 테스트 등으로 메소드가 overwrite 되지 않도록 한다.
  일반적으로 `final`을 사용하면 컴파일 시간이 단축되므로, 이 용도로 사용하면 좋다.
- `final` 키워드를 라이브러리에 적용할때는 local project에서 `final`이 아닌 것을 변경하는 것과 반대로 라이브러리에서 무언가를 non-`final`로 변형하는 것이 중요하지 않기 때문에 주의해야 한다.
+ 
+ `final` 키워드를 라이브러리에 적용 할 때는 특히 주의 한다.
+ 로컬 프로젝트에서 무언가를 비 `final` 로 변경하는 것과는 대조적으로 라이브러리에서 비 `final` 로 변경하는 것은 사소한 사항이 아니다.
  
  */
-//:  - Note: `final` 키워드 ???
 /*:
  - Callout(4.1.12):
  `else`, `catch` 등의 구문을 사용하는 경우 블럭을 그 다음 블럭과 같은 행에 넣는다.
@@ -176,18 +189,24 @@ imageView.backgroundColor = .black
  */
 //: 좋은 예:
 let someBoolean = true
+
 if someBoolean {
     // do something
 } else {
     // do something else
 }
 
+public func readFile(named filename: String) throws -> String {
+    return ""
+}
+
 do {
-    let fileContent = try readFile(name: "Hello.txt")
+    let fileContent = try readFile(named: "Hello.txt")
     fileContent.count
 } catch {
     print(error)
 }
+
 /*:
  - Callout(4.1.13):
  해당 클래스의 인스턴스가 아닌 클래스와 연결된 함수 또는 속성을 선언 할 때 클래스에 `static`을 선호 한다.
@@ -243,14 +262,17 @@ class MyMoneyGoodCase {
         return 2_000_000
     }
 }
+
 let myGoodMoney = MyMoneyGoodCase()
 myGoodMoney.showMeTheMoney
+
 //: 나쁜 예:
 class MyMoneyBadCase {
     func showMeTheMoney() -> Int {
         return 1_000_000
     }
 }
+
 let myBadMoney = MyMoneyBadCase()
 myBadMoney.showMeTheMoney()
 
@@ -304,10 +326,12 @@ let winterOlympicEvent = Olympic.OlympicEvent.nextSummerEvent
 extension GoodStyle {
     private static let myPrivateNumber: Int = 222
 }
+
 //: 나쁜 예:
 extension BadStyle {
     static private let myPrivateAnotherNumber: Int = 111
 }
+
 /*:
  - Callout(4.2.2):
  `access modifier`는 단독으로 표시 되지 않도록 한다.
@@ -317,11 +341,13 @@ extension BadStyle {
 open class WinterOlympic {
     
 }
+
 //: 나쁜 예:
 open
 class SummerOlympic {
     
 }
+
 /*:
  - Callout(4.2.3):
  `internal`은 access modifier 의 기본값이므로 기술하지 않는다.
@@ -331,10 +357,12 @@ class SummerOlympic {
 class SuperCar {
 
 }
+
 //: 나쁜 예:
 internal class SportsCar {
     
 }
+
 /*:
  - Callout(4.2.4):
  Unit Test 를 통해 속성에 접근해야 하는 경우 `@testable import ModuleName`을 사용하여 `internal`을 사용하도록 만든다.
@@ -348,6 +376,7 @@ internal class SportsCar {
  - warning: `@testable`에 대해서는 `private` 이 아니다.
  */
 let privateName = "Apple Seed"
+
 /*:
  - Callout(4.2.5):
  가능하면 `private` 보다 `fileprivate` 으로 지정한다.
@@ -421,6 +450,7 @@ func handleProblem(problem: Problem) {
         break
     }
 }
+
 /*:
  
  - Callout(4.4.5):
@@ -436,6 +466,7 @@ func goodStyleSwitchStatement(lengthUnit: LengthFormatter.Unit) {
         print("야드파운드법")
     }
 }
+
 //: 나쁜 예:
 func badStyleSwitchStatement(lengthUnit: LengthFormatter.Unit) {
     switch lengthUnit {
@@ -451,23 +482,24 @@ func badStyleSwitchStatement(lengthUnit: LengthFormatter.Unit) {
         print("야드파운드법")
     }
 }
+
 /*:
  - Callout(4.4.6):
  도달하지 않아야 할 default case 가 있는 경우 오류를 던지거나 assertion 처리하는것이 바람직 하다.
  
  */
-enum DigitError: Error {
-    case invalidDigit(Int)
+enum MyDigitError: Swift.Error {
+    case invalidDigit(digit: Int)
 }
-
 func handleDigit(_ digit: Int) throws {
     switch digit {
     case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9:
         print("Yes, \(digit) is a digit")
     default:
-        throw DigitError.invalidDigit(digit)
+        throw MyDigitError.invalidDigit(digit: digit)
     }
 }
+
 /*:
  - - -
 
@@ -496,10 +528,12 @@ var someOptional: String?
 if someOptional != nil {
     // do something
 }
+
 //: 나쁜 예:
 if let _ = someOptional {
     // ...
 }
+
 /*:
  - Callout(4.5.4):
  `unowned`는 사용하지 않는다.
@@ -514,6 +548,7 @@ weak var parentViewController: UIViewController?
 //: 나쁜 예:
 weak var grandParentViewController: UIViewController!
 unowned var grandGrandParentViewController: UIViewController
+
 /*:
  - Callout(4.5.5):
  optional 을 unwrap 할 때 상수 또는 변수와 unwrap 한 이름을 같은 이름으로 한다.
@@ -527,6 +562,7 @@ func goodStyleWithOptionalParameter(parameter: String?) {
     // do something
     print("\(parameter)")
 }
+
 //: 나쁜 예:
 func badStyleWithOptionalParameter(parameter: String?) {
     guard let myParameter = parameter else {
@@ -535,6 +571,7 @@ func badStyleWithOptionalParameter(parameter: String?) {
     // do something
     print("\(myParameter)")
 }
+
 /*:
  - - -
 
@@ -570,6 +607,7 @@ var goodStyleComputedProperty: String {
     }
     return "I love Totoro."
 }
+
 //: 나쁜 예:
 var badStyleComputedProperty: String {
     get {
@@ -579,6 +617,7 @@ var badStyleComputedProperty: String {
         return "I love Totoro."
     }
 }
+
 /*:
  - Callout(4.7.2):
  `get {}`, `set {}`, `willSet`, `didSet`을 사용할때, 각 블럭에 들여 쓰기 한다.
@@ -610,6 +649,7 @@ var goodStyleComputed: String {
         goodStyleStoredProperty = newValue
     }
 }
+
 //: 나쁜 예:
 var badStyleStoredProperty: String = "페라리" {
     willSet(newCar) {
@@ -631,6 +671,7 @@ var badStyleComputed: String {
         badStyleStoredProperty = newCar
     }
 }
+
 /*:
  - Callout(4.7.4):
  다음과 같이 싱글톤 속성을 선언 할 수 있다.
@@ -641,6 +682,7 @@ class CarManager {
     
     // do something
 }
+
 /*:
  - - -
  
@@ -667,6 +709,7 @@ someDataTask { (data: Data, response: URLResponse) in
 }
 
 [1, 2, 3].flatMap{ String($0) }
+
 /*:
  - Callout(4.8.2):
  
@@ -683,6 +726,7 @@ let completionBlock2: () -> Void = {
 }
 
 let completionBlock3: (() -> Void)? = nil
+
 /*:
  - Callout(4.8.3):
  가능한 경우 수평 오버플로우가 너무 많지 않도록 (가능하면 한줄이 160글자가 넘지 않도록) 매개 변수 이름을 클로저의 여는 중괄호와 같은 줄에 유지 한다.
@@ -697,13 +741,16 @@ let completionBlock3: (() -> Void)? = nil
 func doSomethingWithSuccessAndFailureHandler(with count: Double, successHandler: (String) -> Void, failure: (String) -> Void) {
     // do something
 }
+
 func doSomethingWithSuccessHandler(with count: Double, successHandler: (String) -> Void) {
     // do something
 }
+
 // trailing closure
 doSomethingWithSuccessHandler(with: 1.0) { (parameter1) in
     print("Success with \(parameter1)")
 }
+
 // no trailing closure
 doSomethingWithSuccessAndFailureHandler(with: 1.0,
                                         successHandler: { (parameter1) in
@@ -712,6 +759,7 @@ doSomethingWithSuccessAndFailureHandler(with: 1.0,
                                         failure: { (parameter1) in
                                             print("Failure with \(parameter1)")
 })
+
 /*:
  - - -
  
@@ -747,6 +795,7 @@ func goodStyleAddArray() -> Array<Int> {
     
     return myNewArray.map{ $0 }
 }
+
 let array1 = goodStyleAddArray()
 print("\(array1)")
 
@@ -763,6 +812,7 @@ func badStyleAddArray() -> Array<Int> {
     
     return myNewArray
 }
+
 let array2 = badStyleAddArray()
 print("\(array2)")
 
@@ -771,9 +821,295 @@ print("\(array2)")
  
  ### 4.10    Error Handling
  
+ - Callout(4.10.1):
+ `String` 을 반환하는 함수를 설계 한다고 가정했을때, 이 함수에서 오류가 발생한 경우 처리 방법에 대한 설계 고민이 있을 수 있다.
+ 이 경우 일반적으론 반환 유형을 `String?` 으로 변경하여 오류 발생시 `nil`을 반환하도록 할 수 있다.
+ 그러나 이러한 방법은 함수 내부 어느 부분에서 `nil`을 발생 시켰는지 인지하기 어렵다.
+ 
+ */
+//: 예:
+func readMyFile(named filename: String) -> String? {
+    guard let file = FileHandle(forReadingAtPath: filename) else {
+        return nil
+    }
+    
+    let fileContent = file.readDataToEndOfFile()
+
+    return String(data: fileContent, encoding: String.Encoding.utf8)
+}
+
+func printSomeFile() {
+    let filename = "~/somefile.txt"
+    guard let fileContent = readMyFile(named: filename) else {
+        print("Unable to open file \(filename)")
+        return
+    }
+    print(fileContent)
+}
+
+printSomeFile()
+
+// Unable to open file ~/somefile.txt
+/*:
+ 이런 경우, Swift의 `try / catch`로 실패 원인을 파악 할 수 있도록 접근할 수 있도록 하는 것이 좋다.
+ 
+ 다음과 같이 Swift의 Error 프로토콜을 채용한 Error 구조체를 선언하여 이 Error `Exception`을 던지도록 할 수 있다.
+ */
+struct Error: Swift.Error {
+    public let file: StaticString
+    public let function: StaticString
+    public let line: UInt
+    public let message: String
+    
+    public init(message: String,
+                file: StaticString = #file,
+                function: StaticString = #function,
+                line: UInt = #line) {
+        
+        self.file = file
+        self.function = function
+        self.line = line
+        self.message = message
+    }
+}
+
+//: 예:
+func readMyFile2(named filename: String) throws -> String {
+    guard let file = FileHandle(forReadingAtPath: filename) else {
+        throw Error(message: "Unable to open file named \(filename).")
+    }
+    
+    let fileContent = file.readDataToEndOfFile()
+    
+    return String(data: fileContent, encoding: String.Encoding.utf8) ?? ""
+}
+
+func printSomeFile2() {
+    let filename = "~/somefile.txt"
+    do {
+        let fileContents = try readMyFile2(named: filename)
+        print(fileContents)
+    } catch {
+        print(error)
+    }
+}
+
+printSomeFile2()
+// MyError(file: "SwiftStyleGuide.playground", function: "readMyFile2(named:)", line: 819, message: "Unable to open file named ~/somefile.txt.")
+
+/*:
+ 오류 처리와 반대로 `optional`을 반환 유형으로 사용할 수 있는 타당한 예외가 있다.
+ 
+ 결과가 의미 상으로 잠재적으로 `nil`인 경우, 오류 처리 보다는 `optional` 을 반환하는 것이 합리적이다.
+ 
+ 일반적으로, 메소드가 `실패` 할 수 도 있고 `optional` 반환 유형을 사용하는 경우 실패 이유가 명백하지 않으면 메소드가 오류를 던질 수도 있다.
+ */
+/*:
  - - -
  
+ ### 4.11   `guard` 문 사용
+ 
+ - Callout(4.11.1):
+ "조기 반환" 전략을 사용 한다.
+ `if` 문 내부에서 로직을 처리 하도록 하면 중첩 코드로 인해 가독성이 떨어 진다.
 
+ `guard` 문을 사용하면 코드 가독성을 향상시킬 수 있다.
+ */
+var myIceCreams = ["바닐라", "Milk", "초콜렛", "딸기"]
+
+func eat(_ foodName: String) {
+    // ...
+}
+
+func canEat(_ foodName: String) -> Bool {
+    // ...
+    return false
+}
+
+//: 좋은 예:
+func goodStyleEatMyIceCream(at index: Int) {
+    guard index >= 0 && index < myIceCreams.count else {
+        // 인덱스 범위를 벗어났으므로 조기 반환
+        return
+    }
+    
+    let iceCream = myIceCreams[index]
+    eat(iceCream)
+}
+
+//: 나쁜 예:
+func badStyleEatMyIceCream(at index: Int) {
+    if index >= 0 && index < myIceCreams.count {
+        let iceCream = myIceCreams[index]
+        eat(iceCream)
+    }
+}
+
+/*:
+ - Callout(4.11.2):
+ 옵셔널 유형을 unwrap 할때 `guard` 문을 사용한다.
 
  */
+func readBook(with bookName: String) {
+    // ...
+}
+
+//: 좋은 예:
+func goodStyleOptionalParameterHandling(bookName: String?) {
+    guard let bookName = bookName else {
+        return
+    }
+    
+    readBook(with: bookName)
+}
+
+//: 나쁜 예:
+func badStyleOptionalParameterHandling(bookName: String?) {
+    if let bookName = bookName {
+        readBook(with: bookName)
+    }
+}
+
+//: 더 나쁜 예:
+func badStyleOptionalParameterHandling2(bookName: String?) {
+    if bookName == nil {
+        return
+    }
+    
+    readBook(with: bookName!)
+}
+
+/*:
+ - Callout(4.11.3):
+ `optional`을 unwrapping 하는 것이 아닐때 `if` 문이나 `guard` 문 중 어는 것을 사용할지 여부를 판단하는 기준은 코드의 가독성이다.
+ 
+ 두 가지 boolean 에 따라 여러 비교가 포함된 복잡한 논리 문 등이 가능한 경우가 있다. 따라서 합리적 판단에 따라 가독성있는 일관된 코드를 작성한다.
+ 
+ `guard` 와 `if` 문 사용에 따른 가독성이 동등하여 어느 것이 가독성이 높은지 판단하기 어려운 경우 `guard` 문을 사용하도록 한다.
+ */
+//: 좋은 예:
+func myCheckOperation(operationFailed: Bool) {
+    if operationFailed {
+        return
+    }
+}
+
+func myCheckOperation2(isSuccessful: Bool) {
+    guard isSuccessful else {
+        return
+    }
+}
+
+//: 나쁜 예:
+func myCheckOperation3(operationFailed: Bool) {
+    // 이중 부정은 논리적으로 읽기 어렵다. 이런 로직은 사용하지 않도록 한다.
+    guard !operationFailed else {
+        return
+    }
+}
+
+/*:
+ - Callout(4.11.4):
+ 두 개의 서로 다른 상태 중 하나를 선택하는 것에는 `if` 문을 사용하는 것이 `guard` 문을 사용하는 것 보다 합리적이다.
+ */
+let isFrendly = false
+
+//: 좋은 예:
+func printFrendly() {
+    if isFrendly {
+        print("Hello, nice to meet you")
+    } else {
+        print("너 양아치구나!")
+    }
+}
+
+//: 나쁜 예:
+func printFrendly2() {
+    guard isFrendly else {
+        print("너 양아치구나!")
+        return
+    }
+    
+    print("Hello, nice to meet you")
+}
+
+/*:
+ - Callout(4.11.5):
+ `guard` 는 실패로 인해 현재 컨텍스트가 종료되어야 하는 경우에만 사용되어야 한다.
+ 
+ 아래 예와 같이 서로를 차단해서는 안되는 두 개의 서로 관련 없은 조건에 대해서는 `guard` 보다는 `if` 를 사용하는 것이 더 합리적이다.
+ 
+ */
+//: 예:
+func myExampleFunction() {
+    let bookName: String? = "Martion"
+    let foodName: String? = "비빔밥"
+    
+    // ...
+    if let bookName = bookName {
+        readBook(with: bookName)
+    }
+    
+    if let foodName = foodName, canEat(foodName) {
+        eat(foodName)
+    }
+    
+    // ...
+}
+
+/*:
+ - Callout(4.11.6):
+ `guard` 를 사용하여 여러 `optional` 값을 unwrap 해야 하는 경우, 단일 `guard` 문에 여러 `optional` 을 조합하여 사용할 수 있다.
+ 
+ `optional` 각각의 값을 구분지어 처리할 필요가 있으면, 각각에 `guard` 문을 사용 한다.
+ */
+//: 예:
+func myExample1(thingOne: String?, thingTwo: String?, thingThree: String?) {
+    // 단순 반환의 경우 조합하여 사용
+    guard let thingOne = thingOne,
+        let thingTwo = thingTwo,
+        let thingThree = thingThree else {
+            return
+    }
+    
+    print("\(thingOne), \(thingTwo), \(thingThree)")
+}
+
+func myExample2(thingOne: String?, thingTwo: String?, thingThree: String?) throws {
+    // 개별 인자에 대해 오류 파악이 필요한 경우 분리하여 사용
+    guard let thingOne = thingOne else {
+        throw Error(message: "Unwrapping thingOne failed.")
+    }
+    
+    guard let thingTwo = thingTwo else {
+        throw Error(message: "Unwrapping thingTwo faild.")
+    }
+    
+    guard let thingThree = thingThree else {
+        throw Error(message: "Unwrapping thingThree faild.")
+    }
+    
+    print("\(thingOne), \(thingTwo), \(thingThree)")
+}
+
+/*:
+ - Callout(4.11.7):
+ `guard` 문은 한 줄로 기술하지 않는다.
+ */
+//: 좋은 예:
+func myExample3(thingOne: String?) {
+    guard let thingOne = thingOne else {
+        return
+    }
+    
+    print("\(thingOne)")
+}
+
+//: 나쁜 예:
+func myExample4(thingOne: String?) {
+    guard let thingOne = thingOne else { return }
+    
+    print("\(thingOne)")
+}
+
 //: [Next](@next)
