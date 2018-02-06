@@ -5,11 +5,10 @@
         <page name='00.Index'/>
         <page name='01.CodeFormatting'/>
         <page name='02.Naming'/>
+        <page name='02-Naming'/>
         <page name='0.3.CodeOrganization'/>
         <page name='04.CodingStyle'/>
-        <page name='Spacing'/>
-        <page name='Comment'/>
-        <page name='ClassesAndStructures'/>
+        <page name='05.Document &amp; Comment'/>
         <page name='FunctionDeclarations'/>
         <page name='ClosureExpressions'/>
         <page name='Types'/>
