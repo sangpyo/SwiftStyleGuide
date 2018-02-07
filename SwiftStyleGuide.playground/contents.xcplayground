@@ -3,23 +3,10 @@
     <pages>
         <page name='00.Cover'/>
         <page name='00.Index'/>
-        <page name='01.CodeFormatting'/>
-        <page name='02.Naming'/>
+        <page name='01-Code Formatting'/>
         <page name='02-Naming'/>
-        <page name='0.3.CodeOrganization'/>
-        <page name='04.CodingStyle'/>
-        <page name='05.Document &amp; Comment'/>
-        <page name='FunctionDeclarations'/>
-        <page name='ClosureExpressions'/>
-        <page name='Types'/>
-        <page name='FunctionsVsMethods'/>
-        <page name='MemoryManagement'/>
-        <page name='AccessControl'/>
-        <page name='ControlFlow'/>
-        <page name='GoldenPath'/>
-        <page name='Semicolons'/>
-        <page name='Parentheses'/>
-        <page name='OrganizationAndBundleIdentifier'/>
+        <page name='04-Coding Style'/>
+        <page name='05-Document &amp; Comment'/>
         <page name='References'/>
     </pages>
 </playground>

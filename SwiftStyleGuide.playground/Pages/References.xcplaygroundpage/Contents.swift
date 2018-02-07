@@ -10,8 +10,4 @@
  * https://github.com/raywenderlich/swift-style-guide
  ---
  */
-/*:
- - Callout(Llama Spotting Tips):
- Pack warm clothes with your binoculars.
- */
 //: [목차](Index)

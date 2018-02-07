@@ -2,6 +2,8 @@
 /*:
  ## 4.    코딩 스타일
  
+ - - -
+ 
  ### 4.1    일반 사항
 
  - Callout(4.1.1):
@@ -278,39 +280,32 @@ myBadMoney.showMeTheMoney()
 
 /*:
  - Callout(4.1.15):
- `static` 함수 또는 `static` 속성 집합의 네임스페이스를 지정하려면, `class` 또는 `struct`에 case가 없는 `enum`을 사용한다.
- 이렇게 하면 컨테이너에 `private init() {}` 을 추가하지 않아도 된다.
+ 인스턴스의 상수가 아닌 Type의 상수를 정의 할 경우, `enum` 에 `static let` 또는 `static func`를 기술하여
+ 상수의 네임스페이스로 작동할 수 있도록 한다.
+ 
+ 이렇게 할 경우 글로벌로 정의된 상수와 구분 할 수 있는 장점이 있다.
  
  */
-struct Olympic {
-    enum OlympicEvent {
-        static var nextWinterEvent: Int {
-            return 2018
-        }
-        static var nextSummerEvent: Int {
-            return 2020
-        }
-        static func winterOlympicEventOfYear(_ year: Int) -> String {
-            switch year {
-            case 2018:
-                return "평창"
-            default:
-                return ""
-            }
-        }
-        
-        static func summerOlympicEventOfYear(_ year: Int) -> String {
-            switch year {
-            case 2016:
-                return "Rio"
-            default:
-                return ""
-            }
-        }
+//: 좋은 예:
+enum Math {
+    static let e = 2.7182818284590
+    static let root2 = 1.414213562
+    static func sin(_ x: Double) -> Double {
+        return Darwin.sin(x)
     }
 }
 
-let winterOlympicEvent = Olympic.OlympicEvent.nextSummerEvent
+let side = 8.0
+let hypotenuse = side * Math.root2
+print("\(hypotenuse)")
+let sin60 = Math.sin(60)
+print("\(sin60)")
+
+//: 나쁜 예:
+let e = 2.7182818284590 // 전역 네임스페이스가 오염됨
+let root2 = 1.414213562
+let hypotenuse2 = side * root2 //
+print("\(hypotenuse2)")
 
 /*:
  - - -
@@ -576,7 +571,8 @@ func badStyleWithOptionalParameter(parameter: String?) {
  - - -
 
  ### 4.6    Protocol
- 
+*/
+/*:
  - Callout(4.6.1):
  프로토콜을 구현할 때 코드의 구성하는 다음의 두 가지 방법이 있다.
  \
@@ -592,12 +588,42 @@ func badStyleWithOptionalParameter(parameter: String?) {
  
  */
 /*:
+ - Callout(4.6.2):
+ Delegate 메소드를 설계할때 첫번째 매개변수는 반드시 Delegate의 원본 이여야 한다.
+ 또한 이름이 지정 되지 않아야 한다.
+ (`UIKit`에 `Delegate` 메소드 디자인 참고. 예: `UITableViewControllerDataSource`)
+ 
+ */
+class NamePickerViewController {
+    // ...
+}
+class NamePickerView {
+    // ...
+}
+
+//: 좋은 예:
+protocol GoodStyleNamePickerDelegate {
+    func namePickerView(_ namePickerView: NamePickerView, didSelectName name: String)
+    func namePickerViewShouldReload(_ namePickerView: NamePickerView) -> Bool
+}
+
+//: 나쁜 예:
+protocol BadStyleNamePickerDelegate {
+    func namePickerView(namePicker: NamePickerViewController, name: String)
+    func namePickerViewShoudReload() -> Bool
+}
+/*:
+ - Callout(4.6.3):
+
+ 
+ */
+/*:
  - - -
  
  ### 4.7    Properties
  
  - Callout(4.7.1):
- 읽기 전용의 계산된 속성을 만드는 경우, `get {}` 없이 getter를 제공한다.
+ 읽기 전용의 계산된 속성을 만드는 경우, `get {}` 없이 getter를 제공 한다.
  
  */
 //: 좋은 예:
@@ -684,6 +710,22 @@ class CarManager {
 }
 
 /*:
+ - Callout(4.7.5):
+ `Array<T>`, `Dictionary<T: U>` 보다 `[T]`, `[T: U]` 를 사용한다.
+ 
+ */
+//: 좋은 예:
+var messages1: [String] = []
+var names1: [Int: String] = [:]
+
+//: 나쁜 예:
+var messages2 = [String]()
+var names2 = [Int: String]()
+
+var messages3: Array<String> = Array<String>()
+var names3: Dictionary<Int, String> = Dictionary<Int, String>()
+
+/*:
  - - -
  
  ### 4.8    Closure
@@ -715,6 +757,7 @@ someDataTask { (data: Data, response: URLResponse) in
  
  클로저를 유형으로 기술하면, 특별히 필요하지 않은 한, 중괄호{}로 묶을 필요가 없다. (예: 유형이 optional 이거나 또는 클로저가 다른 클로저 내부에 있는 경우)
  항상 클로저의 인수는 괄호()로 묶고, 인수가 없을때 괄호()로 표현하고, 반환값이 없을때 `Void`로 표시 한다.
+ 
  */
 //: 예:
 let completionBlock: (Bool) -> Void = { (success) in
@@ -758,6 +801,54 @@ doSomethingWithSuccessAndFailureHandler(with: 1.0,
 },
                                         failure: { (parameter1) in
                                             print("Failure with \(parameter1)")
+})
+
+/*:
+ - Callout(4.8.5):
+ 파라미터와 리턴 타입이 없는 Closure 정의시 `() -> Void`를 사용한다.
+ 
+ */
+//: 좋은 예:
+let completionDownloadBlock1: (() -> Void)?
+
+//: 나쁜 예:
+let completDownloadBlock2: (() -> ())?
+//let completionDownloadBlock3: ((Void) -> (Void))?
+let completeDownloadBlock4: (() -> (Void))?
+
+/*:
+ - Callout(4.8.6):
+  클로저 정의시 타입 정의를 생략한다.
+ 
+ */
+let userNames = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
+//: 좋은 예:
+var reversedNames = userNames.sorted(by: { s1, s2 in
+    return s1 > s2
+})
+
+//: 나쁜 예:
+reversedNames = userNames.sorted(by: { (s1: String, s2: String) -> Bool in
+    return s1 > s2
+})
+
+/*:
+ - Callout(4.8.7):
+ 클로저 호출시 유일한 클로저를 마지막 파라미터로 받는 경우, 파라미터 이름을 생략한다.
+ */
+
+func someFunctionThatTakesAClosure(closure: () -> Void) {
+    // function body goes here
+}
+
+//: 좋은 예:
+someFunctionThatTakesAClosure() {
+    // trailing closure's body goes here
+}
+ 
+//: 나쁜 예:
+someFunctionThatTakesAClosure(closure: {
+    // closure's body goes here
 })
 
 /*:
@@ -1112,4 +1203,260 @@ func myExample4(thingOne: String?) {
     print("\(thingOne)")
 }
 
+//: - - -
+//: - - -
+
+
+/*:
+ - - -
+ ### 4.12    Method
+ */
+/*:
+ - Callout(4.12.1):
+ Action 함수 네이밍은 '주어 + 동사 + 목적어' 형태를 사용 한다.
+ 
+ * _Tab 은 `UIControlEvents`의 `.touchUpInside`에 해당하고, _Press 는 `.touchDonw`에 해당한다.
+ * _will ~_ 은 특정 행위가 일어나기 직전이고,
+ * _did ~_ 는 특정 행위가 일어난 직후이다.
+ * _should ~_ 는 일반적으로 `Bool`을 반환하는 함수에 사용한다.
+ 
+ */
+//: 좋은 예:
+func backButtonDidTap() {
+    //...
+}
+
+//: 나쁜 예:
+func back() {
+    //...
+}
+
+func pressBack() {
+    //...
+}
+
+/*:
+ - - -
+ ### 4.13    Protocol Conformance
+ */
+/*:
+ - Callout(4.13.1):
+ 모델에 프로토콜 적합성을 추가 할때 프로토콜 메소드에 대해 별도의 'extension'을 추가 한다.
+ 이는 관련 메소드를 프로토콜 별로 그룹화하여 관련성을 유지할 수 있고,
+ 클래스에 프로토콜과 관련된 메소드를 추가하여 인스트럭션을 단순화 할 수 있다.
+ 
+ */
+//: 좋은 예:
+import UIKit
+
+class MyGoodStyleViewController: UIViewController {
+    // class stuff
+}
+
+// MARK: - UITableViewDataSource
+extension MyGoodStyleViewController: UITableViewDataSource {
+    // table view data source methods
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension MyGoodStyleViewController: UIScrollViewDelegate {
+    // scroll view delegate methods
+}
+
+//: 나쁜 예:
+class MyBadStyleViewController: UIViewController, UITableViewDataSource, UIScrollViewDelegate {
+    // class stuff & all protocol methods
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
+    }
+}
+/*:
+ - - -
+ ### 4.14    Type
+ */
+/*:
+ - Callout(4.14.1):
+ Swift 의 native type을 사용한다.
+ Swift 는 Objective-C 와의 브릿징을 제공하므로 필요에 따라 사용한다.
+ */
+//: 좋은 예:
+let goodStyleWidth = 120.0  // Double
+let goodStyleWidthString = (goodStyleWidth as NSNumber).stringValue // String
+print("\(type(of: goodStyleWidthString)), \(type(of: goodStyleWidth))")
+
+//: 나쁜 예:
+let badStyleWidth: NSNumber = 120.0 // NSNumber
+let badStyleWidthString = badStyleWidth.stringValue // String
+print("\(type(of: badStyleWidthString)), \(type(of: badStyleWidth))")
+
+/*:
+ - Callout(4.14.2):
+ 객체 라이프타임에 대한 제어를 위해 지연 초기화를 사용하다.
+ 
+ `UIViewController` 와 같이 많은 뷰를 그리는 동작으로 느리게 되는 경우 property에 지연 초기화를 선언 할 수 있다.
+ 
+ */
+//: 예:
+import CoreLocation
+
+class ViewController: UIViewController, CLLocationManagerDelegate {
+    lazy var locationManager: CLLocationManager = self.makeLocationManager()
+    
+    lazy var asHTML: () -> String = {
+        """
+        <p>
+         The White Rabbit put on his spectacles.  "Where shall I begin, please your Majesty?" he asked.
+        "Begin at the beginning," the King said gravely, "and go on till you come to the end; then stop."
+        </p>
+        """
+    }
+    
+    private func makeLocationManager() -> CLLocationManager {
+        let manager = CLLocationManager()
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.delegate = self
+        manager.requestAlwaysAuthorization()
+        return manager
+    }
+}
+
+/*:
+ - - -
+ ### 4.15    메모리 관리
+ 
+ 코드 (데모, 예제 코드 포함) 작성시 참조 사이클이 발생하도록 작성하지 않는다.
+ `struct`, `enum` 과 같은 벨류 타입을 사용하여 이러한 참조 사이클이 가능한 발생하지 않도록 한다.
+ 
+ */
+/*:
+ - Callout(4.15.1):
+ `[weak self]` 와 `guard let strongSelf = self self { return }` 관용구를 사용하여 객체의 수명을 연장 한다.
+ 
+ `self` 가 `closer` 보다 오래 존재하는 것이 명확하지 않으면, `[unowned self]` 보다 `[weak self]` 를 사용하여야 한다.
+ 
+ optional 의 unwrapping 보다 명시적 수명 연장을 선호하는 것이 좋다.
+ 
+ */
+//: 좋은 예:
+class HTMLElementGoodStyle {
+    
+    let name: String
+    let text: String?
+    
+    lazy var asHTML: () -> String = { [weak self] in
+        guard let strongSelf = self else {
+            return ""
+        }
+        if let text = strongSelf.text {
+            return "<\(strongSelf.name)>\(text)</\(strongSelf.name)>"
+        } else {
+            return "<\(strongSelf.name) />"
+        }
+    }
+    
+    init(name: String, text: String? = nil) {
+        self.name = name
+        self.text = text
+    }
+}
+
+//: 나쁜 예:
+class HTMLElementBadStyle1 {
+    
+    let name: String
+    let text: String?
+    
+    lazy var asHTML: () -> String = { [unowned self] in
+
+        if let text = self.text {
+            return "<\(self.name)>\(text)</\(self.name)>"
+        } else {
+            return "<\(self.name) />"
+        }
+    }
+    
+    init(name: String, text: String? = nil) {
+        self.name = name
+        self.text = text
+    }
+}
+
+//: 나쁜 예:
+class HTMLElementBadStyle2 {
+    
+    let name: String
+    let text: String?
+    
+    lazy var asHTML: () -> String = { [weak self] in
+        
+        if let text = self?.text {
+            return "<\(self?.name ?? "")>\(text)</\(self?.name ?? "")>"
+        } else {
+            return "<\(self?.name ?? "") />"
+        }
+    }
+    
+    init(name: String, text: String? = nil) {
+        self.name = name
+        self.text = text
+    }
+}
+
+/*:
+ - - -
+ ### 4.16    Access Control
+ 
+ */
+/*:
+ - Callout(4.16.1):
+ `while-condition-increment` 보단 `for-in` 스타일의 `for` 반복문을 사용 한다.
+ 
+ */
+//: 좋은 예:
+for _ in 0..<3 {
+    print("Hello three times.")
+}
+
+var favoriteGenres = ["Rock", "Classical", "Hip hop"]
+for (index, favoriteGenre) in favoriteGenres.enumerated() {
+    print("The \(index) of the airport is \(favoriteGenre).")
+}
+
+for index in stride(from: 0, to: favoriteGenres.count, by: 2) {
+    print(index)
+}
+
+for index in (0...3).reversed() {
+    print(index)
+}
+
+//: 나쁜 예:
+var i = 0
+while i < 3 {
+    print("Hello three times.")
+    i += 1
+}
+
+var j = 0
+
+while j < favoriteGenres.count {
+    let favoriteGenre = favoriteGenres[j]
+    print("\(favoriteGenre) is at position #\(j)")
+    j += 1
+}
 //: [Next](@next)
