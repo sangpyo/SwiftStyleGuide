@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <playground version='6.0' target-platform='ios' display-mode='raw' executeOnSourceChanges='false'>
     <pages>
-        <page name='00.Cover'/>
-        <page name='00.Index'/>
-        <page name='01-Code Formatting'/>
-        <page name='02-Naming'/>
-        <page name='04-Coding Style'/>
-        <page name='05-Document &amp; Comment'/>
+        <page name='Cover'/>
+        <page name='Index'/>
+        <page name='1. Code Formatting'/>
+        <page name='2. Naming'/>
+        <page name='3. Coding Style'/>
+        <page name='4. Document &amp; Comment'/>
         <page name='References'/>
     </pages>
 </playground>

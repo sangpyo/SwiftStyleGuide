@@ -1,14 +1,20 @@
-//: ## 1.    코드 포멧팅
+//: [목차](Index)
+//:
+//: [이전 페이지](@previous)
 //: - - -
+//: ## 1.    코드 포멧팅
+//:
 /*:
  - Callout(1.1):
   탭에 4칸 공백을 사용 한다.
+ 
  */
 /*:
  - Callout(1.2):
-  한 줄은 최대 160자를 초과하지 않는다.
- 
+ 한 줄은 최대 160자를 초과하지 않는다.\
+ \
  (Xcode -> Prefercences -> Text Editing -> Page guide at column: 160)
+ 
 */
 /*:
  - Callout(1.3):
@@ -16,14 +22,18 @@
  
 */
 /*:
- 어느 곳에도 후행 공백이 없도록 한다.
- 
+ - Callout(1.4):
+ 어느 곳에도 후행 공백이 없도록 한다.\
+ \
  (Xcode -> Preferences -> Text Editing -> Automatically trim trailing whitespace + Including whitespace-only lines)
+ 
  */
 /*:
  - Callout(1.5):
  새 줄은 중괄호로 시작하지 않는다. ([1TBS 스타일](https://en.m.wikipedia.org/wiki/indentation_style#1TBS)을 사용한다.)
+ 
  */
+//: 예:
 class SomeClass {
     let x = ""
     let y = ""
@@ -46,6 +56,7 @@ class SomeClass {
  Property, constant, variable, dictionary, 함수 인수, 프로토콜 적합성 또는 수퍼 클래스에 대한 유형 기술시 콜론 앞에 공백을 추가 하지 않는다.
  
  */
+//: 예:
 import Foundation
 import UIKit
 
@@ -87,6 +98,7 @@ someFunction(someArgument: "Kitten")
  쉼표 뒤에 공백을 삽입 한다.
  
  */
+//: 예:
 let myArray = [1, 2, 3, 4, 5]
 
 /*:
@@ -94,6 +106,7 @@ let myArray = [1, 2, 3, 4, 5]
  `+`, `==` 또는 `->` 와 같은 이항 연산자 뒤 공백이 있어야 하며, 또한 `(` 뒤 와 `)` 앞에는 공백이 없어야 한다.
  
  */
+//: 예:
 let myValue = 20 + (20 / 2) * 3
 if 1 + 1 == 3 {
     fatalError("해가 서쪽에서 떳어요.")
@@ -104,9 +117,11 @@ func pancake(with syrup: Syrup) -> Pancake {
 
 /*:
  - Callout(1.9):
- Xcode의 들여쓰기 스타일 사용 한다. (예. CTRL-I를 눌렀을때 코드 변화가 없어야 함). 여러 줄에 걸쳐있는 함수를 선언 할 때 Xcode가 기본값으로 사용되는 구문을 사용 한다.
+ Xcode의 들여쓰기 스타일 사용 한다. (예. CTRL-I를 눌렀을때 코드 변화가 없어야 함). \
+ 여러 줄에 걸쳐있는 함수를 선언 할 때 Xcode가 기본값으로 사용되는 구문을 사용 한다.
  
  */
+//: 예:
 // 여러 줄에 걸쳐있는 함수 선언에 대한 Xcode의 들여 쓰기
 func myFunctionWithManyParameters(parameterOne: String,
                                   parameterTwo: String,
@@ -130,6 +145,7 @@ func myFunctionWithManyParameters(parameterOne: String,
  매개 변수가 많은 함수를 호출할 때 각 인자를 들여쓰기된 별도의 줄에 넣는다.
  
  */
+//: 예:
 myFunctionWithManyParameters(
     parameterOne: "Hello",
     parameterTwo: "My Name is",
@@ -140,6 +156,7 @@ myFunctionWithManyParameters(
  여러 라인으로 기술 되는 충분히 큰 배열, 사전을 인자로 받는 함수는 다음과 같이 각 요소의 `[` 와 `]`를 중괄로와 같이 취급한다. 클로저도 비슷한 방식으로 취급한다.
  
  */
+//: 예:
 myFunctionwithABunchOfArguments(
     someStringArgument: "Hello",
     someArrayArgument: [
@@ -161,7 +178,7 @@ myFunctionwithABunchOfArguments(
  다중 행의 조건 비교의 경우 지역 상수 등을 가능하면 사용 한다.
  
  */
-// 선호 방식
+//: 좋은 예:
 func myPreferedFunctionA(parameterOne x: Int,
                          parameterTwo y: Int,
                          parameterThree z: Int) {
@@ -173,7 +190,8 @@ func myPreferedFunctionA(parameterOne x: Int,
         // ...
     }
 }
-// 비선호 방식
+
+//: 나쁜 예:
 func myNotPreferedFunctionA(parameterOne x: Int,
                             parameterTwo y: Int,
                             parameterThree z: Int) {
@@ -185,4 +203,7 @@ func myNotPreferedFunctionA(parameterOne x: Int,
     }
 }
 
-//: [Next](@next)
+//: - - -
+//: [다음 페이지](@next)
+//:
+//: [목차](Index)

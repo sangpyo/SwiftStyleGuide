@@ -1,21 +1,23 @@
-//: [Previous](@previous)
+//: [목차](Index)
+//:
+//: [이전 페이지](@previous)
+//: - - -
 /*:
- ## 2    이름 지정
- - - - -
+ ## 2    Naming
  
  설명적이고 일관된 이름 지정을 통해 코드를 읽고 이해하기 쉽게 한다.
   - 간결성 보다 명확성을 더 우선시 한다.
   - 이름의 길이에 대해 상관하지 않는다.
-  - 필요 단어 모두 포함하고 불필요한 단어는 생략 한다.
+  - 필요한 단어를 모두 포함하고 불필요한 단어는 생략 한다.
   - 유형(Type)이 아닌 역활에 기초한 이름 사용 한다.
  
  */
 /*:
  - Callout(2.1):
- Objective-C 스타일의 접두사는 Swift에서 사용하지 않는다.
- (예: AKPrinterViewController 대신 PrinterViewController 로 접두사 없이 정의)
- 
- Swift 타입은 자동적으로 네임 스페이스를 포함하는 네임 스페이스가 지정되므로 UI와 같은 클래스 접두어를 사용하지 않는다.
+ Objective-C 스타일의 접두사는 Swift에서 사용하지 않는다. \
+ (예: AKPrinterViewController 대신 PrinterViewController 로 접두사 없이 정의) \
+ \
+ Swift 타입은 자동적으로 네임 스페이스를 포함하는 네임 스페이스가 지정되므로 UI와 같은 클래스 접두어를 사용하지 않는다. \
  다른 모듈의 두이름이 충돌하면 형식 이름 앞에 모듈 이름을 붙여 명확하게 한다.
  
  */
@@ -26,6 +28,7 @@ let myClass = Foundation.Date()
 /*:
  - Callout(2.2):
  유형(예: `struct`, `enum`, `class`, `typedef`, `associatedtype`, 등..) 이름은 UpperCamelCase 를 사용 한다.
+ 
  */
 //: 좋은 예:
 class NamedShape {
@@ -56,8 +59,8 @@ struct identityCard {
 /*:
  - Callout(2.3):
  function, method, property, constant, variable, argument name, enum case, 등의 이름은 lowerCamelCase 를 사용 한다.
+ 
  */
-
 //: 좋은 예:
 let maximumNumberOfLines = 3
 
@@ -104,9 +107,9 @@ class UrlFinder {
 }
 /*:
  - Callout(2.5):
- 인스턴스 독립적인 싱글 톤 이외 모든 상수는 static 이여야 한다.
- static 상수는 enum 규칙에 따라 컨테이너 유형으로 배치되어야 한다.
- 이 컨테이터 이름은 단수(좋은 예: Constant, 나쁜 예: Constants) 이여야하며, 일정한 컨테이너라는 것이 상대적으로 분명하도록 이름 붙인다.
+ 인스턴스 독립적인 싱글 톤 이외 모든 상수는 static 이여야 한다. \
+ static 상수는 enum 규칙에 따라 컨테이너 유형으로 배치되어야 한다. \
+ 이 컨테이터 이름은 단수(좋은 예: Constant, 나쁜 예: Constants) 이여야하며, 일정한 컨테이너라는 것이 상대적으로 분명하도록 이름 붙인다. \
  이것이 명확하지 않은 경우 Constant 이름이 접미사를 추가 할 수 있다.
  
  */
@@ -135,8 +138,8 @@ class BadStyleClassName {
 /*:
  - Callout(2.6):
  Generic과 associated type의 경우,
- generic을 설명할 수 있는 UpperCamelCase 단어를 사용한다.
- 
+ generic을 설명할 수 있는 UpperCamelCase 단어를 사용한다. \
+ \
  만일 이 단어가 준수 하는 프로토콜 또는 수퍼클래스와 충돌한다면, 이 associated type 또는 generic name에 `Type` 을 접미사로 덧붙있 수 있다.
  
  */
@@ -258,8 +261,8 @@ class BadStyleConnectionTableViewCell: UITableViewCell {
 /*:
  - Callout(2.11):
  'protocol'은
- 어떤 것을 설명하는 경우 명사로 지정해야 한다. (예: Collection)
- 능력을 설명하는 경우 `able`, `ible` 또는 `ing`를 접미사로 붙여야 한다. (예: Equatable, ProgressReporting)
+ 어떤 것을 설명하는 경우 명사로 지정해야 한다. (예: Collection) \
+ 능력을 설명하는 경우 `able`, `ible` 또는 `ing`를 접미사로 붙여야 한다. (예: Equatable, ProgressReporting) \
  위 두 가지 어디에도 해당하지 않으면, `Protocol`을  접미사로 추가 한다.
  
  */
@@ -296,8 +299,8 @@ protocol Send {
 
 /*:
  - Callout(2.12):
- Delegate 메소드를 설계할때 첫번째 매개변수는 반드시 Delegate의 원본 이여야 한다.
- 또한 이름이 지정 되지 않아야 한다.
+ Delegate 메소드를 설계할때 첫번째 매개변수는 반드시 Delegate의 원본 이여야 한다. \
+ 또한 이름이 지정 되지 않아야 한다. \
  (`UIKit`에 `Delegate` 메소드 디자인 참고. 예: `UITableViewControllerDataSource`)
  
  */
@@ -308,7 +311,6 @@ class NamePickerView {
 class NamePickerViewController {
     // ...
 }
-
 //: 좋은 예:
 protocol GooStyleNamePickerDelegate {
     func namePickerView(_ namePickerView: NamePickerView, didSelectName name: String)
@@ -337,7 +339,7 @@ anotherView.backgroundColor = UIColor.red
 
 /*:
  - Callout(2.14):
- Genric 타입은 대문자 CamelCase 형식 이름을 가진 설명적인 이름이여야 한다.
+ Genric 타입은 대문자 CamelCase 형식 이름을 가진 설명적인 이름이여야 한다. \
  타입 이름이 의미있는 관계 역활이 아닌 경우 `T, U, V`와 같은 기존 형식인 단일 대문자를 사용한다.
  
  */
@@ -382,4 +384,7 @@ func getName(for rank: Int) -> String? {
     return ""
 }
 
-//: [Next](@next)
+//: - - -
+//: [다음 페이지](@next)
+//:
+//: [목차](Index)
