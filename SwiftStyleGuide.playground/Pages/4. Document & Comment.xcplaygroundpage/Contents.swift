@@ -38,6 +38,27 @@
  개별 코멘트 라인에 `*`를 프리픽스로 붙이지 않는다.
  
  */
+//: 좋은 예:
+/**
+ Swift defines away large classes of common programming errors by adopting modern programming patterns:
+   - Variables are always initialized before use.
+   - Array indices are checked for out-of-bounds errors.
+   - Integers are checked for overflow.
+   - Optionals ensure that nil values are handled explicitly.
+   - Memory is managed automatically.
+   - Error handling allows controlled recovery from unexpected failures.
+ */
+
+//: 나쁜 예:
+/**
+ * Swift defines away large classes of common programming errors by adopting modern programming patterns:
+ *  - Variables are always initialized before use.
+ *  - Array indices are checked for out-of-bounds errors.
+ *  - Integers are checked for overflow.
+ *  - Optionals ensure that nil values are handled explicitly.
+ *  - Memory is managed automatically.
+ *  - Error handling allows controlled recovery from unexpected failures.
+ */
 /*:
  - Callout(4.1.4):
  새로운 `- parameter` 문법을 사용한다. (구식 방식인 `:param:` 대신에) (소문자 `parameter` 이니 주의)\

@@ -104,22 +104,28 @@ class MyConnectionTableViewController: UITableViewController {
  
  */
 //: 예:
-class MyClass {
+class MyActionClass {
     func myFunctionWithEscapingClosure(closure: () -> Void) {
-    
+        //...
     }
+    
     func doSomething() {
-        
-    }
-}
-let myClass: MyClass = MyClass()
-myClass.myFunctionWithEscapingClosure { [weak self]  in
-    guard let strongSelf = self else {
-        return
+        //...
     }
     
-    strongSelf.doSomething()
+    func myAction() {
+        myFunctionWithEscapingClosure { [weak self]  in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            strongSelf.doSomething()
+        }
+    }
 }
+
+let action = MyActionClass()
+action.myAction()
 
 /*:
  - Callout(3.1.7):
@@ -573,26 +579,89 @@ func badStyleWithOptionalParameter(parameter: String?) {
 */
 /*:
  - Callout(3.6.1):
- 프로토콜을 구현할 때 코드의 구성하는 다음의 두 가지 방법이 있다.\
- \
- 1: `// MARK: ` 주석을 사용하여 프로토콜 구현을 나머지 코드와 분리\
- \
- 2: `class` / `struct` 구현 코드 외부의 확장을 사용하지만 동일 소스에 둠\
- \
- \
- extension 기능을 사용할 때 확장 기능의 메소드를 하위 클래스로 재 정의 할 수 없으므로 테스트가 어려워 질 수 있다.\
- 이것은 일반적인 사용 사례라면 일관성을 위해 첫번째 방법을 사용하는 것이 좋다.\
- 그렇지 않으면 두 번째 방법으로 관심사 분리로 깨끗하게 코드 관리가 가능하도록 구성 한다.
- \
- \
- 두 번째 방법을 사용하는 경우에도 `// MARK: ` 를 추가하여 Xcode 의 UI 에서 메소드/퍼러퍼티/클래스/기타 로 목록화 하여 일목요연하게 읽을 수 있도록 한다.
+ 프로토콜을 적합성을 추가 할때 코드의 구성하는 다음의 두 가지 방법으로 할 수 있다.
+   1. 클래스 내에서 `// MARK: ` 주석을 사용하여 프로토콜 구현을 나머지 코드와 분리 하는 방법
+   2. `class` / `struct` 구현 코드에 extension 을 사용하여 동일 프로토콜 별로 그룹화 하는 방법
+ 
+ 첫번째 방법은 짧은 코드 구조에서는 코드 관리에 별 어려움이 없을 수 있으나, 코드가 길어지고 역사가 깊어진 경우 코드를 읽고 유지 보수 하기 어려워 질 수 있다.
+ 이런 경우가 예상 되면 두 번째 방법으로 관심사 별 분리로 깨끗하게 코드 관리가 가능하도록 구성 한다.
+ 
+ 두 번째 방법을 사용하는 경우에도 `// MARK: - ` 를 추가하여 Xcode 의 UI 에서 메소드/퍼러퍼티/클래스/기타 로 목록화 하여 일목요연하게 읽을 수 있도록 한다.
+ 이렇게 하면 관련 메소드를 프로토콜 별로 그룹화하여 관련성을 유지할 수 있고, 클래스에 프로토콜과 관련된 메소드만 추가하여 인스트럭션을 단순화 할 수 있다.
+ 
+ extension 기능을 사용할 때 extension 에 추가한 메소드를 하위 클래스로 재 정의 할 수 없으므로 테스트가 어려워 질 수 있다.
  
  */
+//: * extension 을 사용하여 관심사 별로 그룹화하는 예:
+import UIKit
+
+// MARK: - MyStyleViewController
+
+class MyStyleViewController: UIViewController {
+    // class stuff
+    func myClassStuff() {
+        
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension MyStyleViewController: UITableViewDataSource {
+    // table view data source methods
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension MyStyleViewController: UIScrollViewDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // ...
+    }
+    //...
+}
+
+//: * 단일 클래스 내에서 `// MARK: -` 를 사용하는 예:
+class MyAnotherStyleViewController: UIViewController, UITableViewDataSource, UIScrollViewDelegate {
+    
+    // MARK: - MyAnotherStyleViewController
+    
+    func myClassStuff() {
+        
+    }
+    
+    // MARK: - UITableViewDataSource
+
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
+    }
+    
+    // MARK: - UIScrollViewDelegate
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // ...
+    }
+}
+
 /*:
  - Callout(3.6.2):
  Delegate 메소드를 설계할때 첫번째 매개변수는 반드시 Delegate의 원본 이여야 한다.\
  또한 이름이 지정 되지 않아야 한다.\
- (`UIKit`에 `Delegate` 메소드 디자인 참고. 예: `UITableViewControllerDataSource`)
+ (`UIKit`에 `Delegate` 메소드 디자인 참고. 예 -  `UITableViewControllerDataSource`)
  
  */
 class NamePickerViewController {
@@ -851,7 +920,7 @@ someFunctionThatTakesAClosure(closure: {
 /*:
  - - -
  
- ### 3.9    Array
+ ### 3.9    Collection
  
  - Callout(3.9.1):
  일반적으로 subscript 로 배열에 직접 접근 하지 않도록 한다.\
@@ -861,6 +930,22 @@ someFunctionThatTakesAClosure(closure: {
  `for (index, value) in items.enumerated()` 로 인덱스와 값을 모두 얻을 수 있다.
  
 */
+//: 좋은 예:
+var favoriteMovies = ["조선명탐정", "신과 함께", "1987"]
+
+for (index, favoriteMovie) in favoriteMovies.enumerated() {
+    print("The \(index) of the movie is \(favoriteMovie).")
+}
+
+for index in stride(from: 0, to: favoriteMovies.count, by: 2) {
+    print(index)
+}
+
+//: 나쁜 예:
+for index in 0 ..< favoriteMovies.count {
+    print("The \(index) of the movie is \(favoriteMovies[index]).")
+}
+
 /*:
  - Callout(3.9.2):
  배열을 추가/연결하기위해 `+=` 또는 `+` 연산자를 사용하지 않는다.\
@@ -1209,10 +1294,11 @@ func myExample4(thingOne: String?) {
 /*:
  - Callout(3.12.1):
  Action 함수 네이밍은 '주어 + 동사 + 목적어' 형태를 사용 한다.
- * _Tab 은 `UIControlEvents`의 `.touchUpInside`에 해당하고, _Press 는 `.touchDonw`에 해당한다.
- * _will ~_ 은 특정 행위가 일어나기 직전이고,
- * _did ~_ 는 특정 행위가 일어난 직후이다.
- * _should ~_ 는 일반적으로 `Bool`을 반환하는 함수에 사용한다.
+
+   * _Tab 은 `UIControlEvents`의 `.touchUpInside`에 해당하고, _Press 는 `.touchDonw`에 해당한다.
+   * _will ~_ 은 특정 행위가 일어나기 직전이고,
+   * _did ~_ 는 특정 행위가 일어난 직후이다.
+   * _should ~_ 는 일반적으로 `Bool`을 반환하는 함수에 사용한다.
  
  */
 //: 좋은 예:
@@ -1414,7 +1500,7 @@ class HTMLElementBadStyle2 {
 
 /*:
  - - -
- ### 3.16    Access Control
+ ### 3.16    Control Flow
  
  */
 /*:

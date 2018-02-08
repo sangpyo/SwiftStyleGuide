@@ -14,10 +14,10 @@
  */
 /*:
  - Callout(2.1):
- Objective-C 스타일의 접두사는 Swift에서 사용하지 않는다. \
- (예: AKPrinterViewController 대신 PrinterViewController 로 접두사 없이 정의) \
+ `Objective-C` 스타일의 접두사는 Swift에서 사용하지 않는다. \
+ (예: `AKPrinterViewController` 대신 `PrinterViewController` 로 접두사 없이 정의) \
  \
- Swift 타입은 자동적으로 네임 스페이스를 포함하는 네임 스페이스가 지정되므로 UI와 같은 클래스 접두어를 사용하지 않는다. \
+ Swift 타입은 자동적으로 네임 스페이스를 포함하는 네임 스페이스가 지정되므로 `UI`와 같은 클래스 접두어를 사용하지 않는다. \
  다른 모듈의 두이름이 충돌하면 형식 이름 앞에 모듈 이름을 붙여 명확하게 한다.
  
  */
